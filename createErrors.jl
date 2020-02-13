@@ -110,15 +110,15 @@ function error_character(input_char::Char, char_range::AbstractString)
 
      if char_range == "alpha"
          # A randomly chosen neigbouring key in the same keyboard row
-         if all(isalpha,input_char) && rand_num <= single_typo_prob["same_row"]
+         if all(isletter,input_char) && rand_num <= single_typo_prob["same_row"]
              output_char = rand(rows[input_char])
             # print("++++++:",output_char)
         # A randomly chosen neigbouring key in the same keyboard column
-        elseif all(isalpha,input_char) && rand_num <= (single_typo_prob["same_row"] + single_typo_prob["same_col"])
+        elseif all(isletter,input_char) && rand_num <= (single_typo_prob["same_row"] + single_typo_prob["same_col"])
             output_char = rand(cols[input_char])
             #print("#####:",output_char)
         else
-            choice_str = replace(string_lowercase,input_char,"")
+            choice_str = replace(string_lowercase,input_char=>"")
             output_char = rand(split(choice_str,""))
             #print("****:",output_char)
          end
@@ -217,7 +217,7 @@ function introduce_typos(org_field_val::AbstractString, numbers_of_duplicates::I
             #end
         #end
 
-        elseif (mod_op == "spc_del_prob") && (dup_field_val != nothing) && contains(dup_field_val," ")
+        elseif (mod_op == "spc_del_prob") && (dup_field_val != nothing) && occursin(dup_field_val," ")
 
             print("Deleted the spaces")
              num_spaces = count(c->c==' ', collect(dup_field_val))
